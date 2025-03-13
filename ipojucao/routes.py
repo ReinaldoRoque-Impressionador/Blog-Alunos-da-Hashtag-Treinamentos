@@ -1,11 +1,3 @@
-#from crypt import methods
-#from fileinput import filename
-#from importlib.metadata import pass_none
-from os import abort
-
-from flask import render_template, redirect, url_for, flash, request, abort
-from mypy.util import os_path_join
-
 #from wtforms.validators import email
 
 from ipojucao import app, database, bcrypt
@@ -63,7 +55,7 @@ def login():
         if existing_user:
             flash(f'Email {form_criarconta.email.data} já está em uso. Por favor, escolha outro email.', 'alert-warning')
         else:
-            senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data)
+            senha_cript = bcrypt.generate_password_hash(form_criarconta.senha.data).decode("utf-8")
             usuario = Usuario(username=form_criarconta.username.data, email=form_criarconta.email.data, senha=senha_cript)
             try:
                 database.session.add(usuario)
@@ -179,7 +171,5 @@ def excluir_post(post_id):
         return redirect(url_for('home'))
     else:
         abort(403)
-
-
 
 
